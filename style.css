@@ -124,3 +124,27 @@ tr:hover {
 .text-center {
     text-align: center;
 }
+
+.login-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.login-links a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+.mensagem-erro {
+    background: #fee2e2;
+    color: #991b1b;
+}

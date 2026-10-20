@@ -3,7 +3,7 @@
 session_start();
 require_once "includes/conexao.php";
 
-if (!isset($_SESSION["usuario_id"])) {
+if (!isset($_SESSION["usuario_id"]) || !isset($_SESSION["usuario_email"])) {
     header("Location: index.php");
     exit;
 }
@@ -27,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $id = (int) $_SESSION["usuario_id"];
 
-        $stmt = $conn->prepare(
-            "SELECT senha FROM users WHERE id = ? LIMIT 1"
+        $stmt = $conexao->prepare(
+            "SELECT senha FROM usuarios WHERE id = ? LIMIT 1"
         );
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -42,8 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else {
                 $novoHash = password_hash($nova, PASSWORD_DEFAULT);
 
-                $stmt = $conn->prepare(
-                    "UPDATE users SET senha = ? WHERE id = ?"
+                $stmt = $conexao->prepare(
+                    "UPDATE usuarios SET senha = ? WHERE id = ?"
                 );
                 $stmt->bind_param("si", $novoHash, $id);
 

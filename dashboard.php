@@ -6,7 +6,7 @@ require_once "includes/conexao.php";
 require_once "includes/verificar_login.php";
 
 // Nome do usuário conectado
-$nomeUsuario = $_SESSION["usuario"] ?? "Usuário";
+$nomeUsuario = $_SESSION["usuario_nome"] ?? "Usuário";
 $totalProdutos = 0;
 
 // Consulta a quantidade de produtos cadastrados

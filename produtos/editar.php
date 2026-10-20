@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="card">
 
-            <h1>✏️ Editar Produto</h1>
+            <h1>Editar Produto</h1>
 
             <p class="descricao">
                 Altere as informações do produto e salve as modificações.

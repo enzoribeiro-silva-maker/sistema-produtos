@@ -1,4 +1,3 @@
-```php
 <?php
 
 require_once "../includes/verificar_login.php";
@@ -31,7 +30,7 @@ $resultado = $conexao->query($sql);
 
         <div class="card">
 
-            <h1>📋 Produtos Cadastrados</h1>
+            <h1>Produtos Cadastrados</h1>
 
             <p>
                 Lista de produtos registrados no sistema.
@@ -40,7 +39,7 @@ $resultado = $conexao->query($sql);
             <br>
 
             <a class="btn" href="cadastrar.php">
-                ➕ Cadastrar Produto
+                Cadastrar Produto
             </a>
 
             <table>
@@ -110,13 +109,11 @@ $resultado = $conexao->query($sql);
                                     Editar
                                 </a>
 
-                                <a
-                                    class="btn btn-danger"
-                                    href="excluir.php?id=<?php echo $produto["id"]; ?>"
-                                    onclick="return confirm('Deseja realmente excluir este produto?');"
-                                >
-                                    Excluir
-                                </a>
+                                <form action="excluir.php" method="POST" style="display:inline"
+                                      onsubmit="return confirm('Deseja realmente excluir este produto?');">
+                                    <input type="hidden" name="id" value="<?php echo (int) $produto["id"]; ?>">
+                                    <button class="btn btn-danger" type="submit">Excluir</button>
+                                </form>
 
                             </td>
 
@@ -146,7 +143,7 @@ $resultado = $conexao->query($sql);
                 class="btn btn-secondary"
                 href="../dashboard.php"
             >
-                ← Voltar para o Dashboard
+                Voltar para o Painel
             </a>
 
         </div>
@@ -156,4 +153,3 @@ $resultado = $conexao->query($sql);
 </body>
 
 </html>
-```

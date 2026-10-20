@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="text-center">
 
-                <h1>📦 Sistema de Produtos</h1>
+                <h1>Sistema de Produtos</h1>
 
                 <p>Faça login para continuar</p>
 
@@ -185,6 +185,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </button>
 
             </form>
+
+            <div class="login-links">
+                <a href="recuperar_senha.php">Esqueceu a senha?</a>
+                <a href="criar_conta.php">Criar conta</a>
+            </div>
 
         </div>
 

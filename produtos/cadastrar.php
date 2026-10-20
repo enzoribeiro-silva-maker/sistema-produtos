@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="card">
 
-            <h1>➕ Cadastrar Produto</h1>
+            <h1>Cadastrar Produto</h1>
 
             <?php if ($mensagem != ""): ?>
 
