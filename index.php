@@ -1,23 +1,27 @@
+
 <?php
 
 session_start();
 
-include "includes/conexao.php";
+require_once __DIR__ . "/includes/conexao.php";
 
 $erro = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $email = trim($_POST["email"] ?? "");
-    $senha = $_POST["senha"] ?? "";
+    $senhaDigitada = $_POST["senha"] ?? "";
 
-    if ($email === "" || $senha === "") {
+    if ($email === "" || $senhaDigitada === "") {
 
         $erro = "Preencha todos os campos.";
 
     } else {
 
-        $sql = "SELECT id, nome, email, senha FROM usuarios WHERE email = ? LIMIT 1";
+        $sql = "SELECT id, nome, email, senha
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1";
 
         $stmt = $conexao->prepare($sql);
 
@@ -28,11 +32,58 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $resultado = $stmt->get_result();
 
-            if ($resultado->num_rows === 1) {
+            if ($resultado && $resultado->num_rows === 1) {
 
                 $usuario = $resultado->fetch_assoc();
+                $senhaBanco = $usuario["senha"];
 
-                if ($senha === $usuario["senha"]) {
+                // Verifica senhas que já estão armazenadas como hash.
+                $senhaValida = password_verify(
+                    $senhaDigitada,
+                    $senhaBanco
+                );
+
+                // Compatibilidade temporária com senhas antigas
+                // que ainda estejam armazenadas em texto simples.
+                if (
+                    !$senhaValida &&
+                    hash_equals((string) $senhaBanco, (string) $senhaDigitada)
+                ) {
+
+                    $novoHash = password_hash(
+                        $senhaDigitada,
+                        PASSWORD_DEFAULT
+                    );
+
+                    if ($novoHash !== false) {
+
+                        $atualizacao = $conexao->prepare(
+                            "UPDATE usuarios SET senha = ? WHERE id = ?"
+                        );
+
+                        if ($atualizacao) {
+
+                            $idUsuario = (int) $usuario["id"];
+
+                            $atualizacao->bind_param(
+                                "si",
+                                $novoHash,
+                                $idUsuario
+                            );
+
+                            if ($atualizacao->execute()) {
+                                $senhaValida = true;
+                            }
+
+                            $atualizacao->close();
+                        }
+                    }
+                }
+
+                if ($senhaValida) {
+
+                    // Renova o identificador da sessão após o login.
+                    session_regenerate_id(true);
 
                     $_SESSION["usuario_id"] = $usuario["id"];
                     $_SESSION["usuario_nome"] = $usuario["nome"];
@@ -49,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             } else {
 
-                $erro = "E-mail não encontrado.";
+                $erro = "E-mail ou senha incorretos.";
 
             }
 
@@ -57,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         } else {
 
-            $erro = "Erro ao realizar a consulta no banco de dados.";
+            $erro = "Não foi possível realizar o login. Tente novamente.";
 
         }
     }
@@ -94,30 +145,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php if ($erro !== ""): ?>
 
                 <p class="mensagem">
-                    <?php echo htmlspecialchars($erro); ?>
+                    <?= htmlspecialchars(
+                        $erro,
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ); ?>
                 </p>
 
             <?php endif; ?>
 
-            <form method="POST">
+            <form method="POST" action="">
 
-                <label>E-mail</label>
+                <label for="email">E-mail</label>
 
                 <input
                     type="email"
+                    id="email"
                     name="email"
                     placeholder="Digite seu e-mail"
+                    autocomplete="username"
                     required
                 >
 
                 <br><br>
 
-                <label>Senha</label>
+                <label for="senha">Senha</label>
 
                 <input
                     type="password"
+                    id="senha"
                     name="senha"
                     placeholder="Digite sua senha"
+                    autocomplete="current-password"
                     required
                 >
 
