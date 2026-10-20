@@ -68,75 +68,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Editar Produto</title>
+
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
 
-    <h1>Editar Produto</h1>
+    <div class="container">
 
-    <form method="POST">
+        <div class="card">
 
-        <label>Nome do produto:</label><br>
-        <input
-            type="text"
-            name="nome"
-            value="<?php echo htmlspecialchars($produto["nome"]); ?>"
-            required
-        >
+            <h1>✏️ Editar Produto</h1>
 
-        <br><br>
+            <p class="descricao">
+                Altere as informações do produto e salve as modificações.
+            </p>
 
-        <label>Código:</label><br>
-        <input
-            type="text"
-            name="codigo"
-            value="<?php echo htmlspecialchars($produto["codigo"]); ?>"
-            required
-        >
+            <form method="POST">
 
-        <br><br>
+                <label>Nome do produto</label>
 
-        <label>Categoria:</label><br>
-        <input
-            type="text"
-            name="categoria"
-            value="<?php echo htmlspecialchars($produto["categoria"]); ?>"
-            required
-        >
+                <input
+                    type="text"
+                    name="nome"
+                    value="<?php echo htmlspecialchars($produto["nome"]); ?>"
+                    required
+                >
 
-        <br><br>
+                <label>Código</label>
 
-        <label>Preço:</label><br>
-        <input
-            type="number"
-            name="preco"
-            step="0.01"
-            min="0"
-            value="<?php echo $produto["preco"]; ?>"
-            required
-        >
+                <input
+                    type="text"
+                    name="codigo"
+                    value="<?php echo htmlspecialchars($produto["codigo"]); ?>"
+                    required
+                >
 
-        <br><br>
+                <label>Categoria</label>
 
-        <label>Estoque:</label><br>
-        <input
-            type="number"
-            name="estoque"
-            min="0"
-            value="<?php echo $produto["estoque"]; ?>"
-            required
-        >
+                <input
+                    type="text"
+                    name="categoria"
+                    value="<?php echo htmlspecialchars($produto["categoria"]); ?>"
+                    required
+                >
 
-        <br><br>
+                <label>Preço</label>
 
-        <button type="submit">Salvar Alterações</button>
+                <input
+                    type="number"
+                    name="preco"
+                    step="0.01"
+                    min="0"
+                    value="<?php echo $produto["preco"]; ?>"
+                    required
+                >
 
-    </form>
+                <label>Estoque</label>
 
-    <br>
+                <input
+                    type="number"
+                    name="estoque"
+                    min="0"
+                    value="<?php echo $produto["estoque"]; ?>"
+                    required
+                >
 
-    <a href="listar.php">Voltar para Produtos</a>
+                <div class="acoes">
+
+                    <button type="submit">
+                        💾 Salvar Alterações
+                    </button>
+
+                    <a
+                        href="listar.php"
+                        class="btn btn-secondary"
+                    >
+                        ← Voltar para Produtos
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </body>
 
